@@ -1,0 +1,2 @@
+# HOSTEL-HUB
+Hostel-Hub is a smart web-based hostel management system that digitizes food quality monitoring, complaints, attendance, and administrative operations to improve transparency and student welfare.
