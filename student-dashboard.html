@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Smart Hostel System</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-home"></i>
+                <h2>Hostel<span>Hub</span></h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-tab="overview">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="profile">
+                    <i class="fas fa-user-circle"></i>
+                    <span>My Profile</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="room">
+                    <i class="fas fa-bed"></i>
+                    <span>Room Details</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="complaint">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Complaints</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="food">
+                    <i class="fas fa-utensils"></i>
+                    <span>Food Rating</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="fee">
+                    <i class="fas fa-wallet"></i>
+                    <span>Fee Status</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="attendance">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Attendance</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="welcome-box">
+                    <h3>Welcome back, <span class="highlight" id="studentName">Student!</span> 👋</h3>
+                    <p>Here's your hostel dashboard.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notificationBadge">0</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="user-text">
+                            <h4 id="userName">Aryan Behl</h4>
+                            <p id="userRoll">2501350047</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Stats Cards Row -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-icon stat-icon-1">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Room Number</h3>
+                        <p class="stat-number">B-206</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon stat-icon-2">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Fee Status</h3>
+                        <p class="stat-number paid">₹85,000 Paid</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon stat-icon-3">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Complaints</h3>
+                        <p class="stat-number" id="activeComplaints">0</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon stat-icon-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Food Rating</h3>
+                        <p class="stat-number">4.2 ★</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-pane active">
+                <div class="two-columns">
+                    <div class="left-col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+                            </div>
+                            <div class="activity-list" id="recentActivity">
+                                <div class="activity-item">
+                                    <div class="activity-icon green">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="activity-detail">
+                                        <p class="activity-title">Welcome to HostelHub</p>
+                                        <p class="activity-time">Your smart hostel management system</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-bullhorn"></i> Announcements</h3>
+                            </div>
+                            <div class="announcement-list">
+                                <div class="announcement">
+                                    <span class="announcement-badge">New</span>
+                                    <p>Mess menu updated for April 2026</p>
+                                </div>
+                                <div class="announcement">
+                                    <span class="announcement-badge">Event</span>
+                                    <p>Annual Cultural Fest on April 15th</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-simple"></i> Quick Stats</h3>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-label">
+                                    <span>Attendance this month</span>
+                                    <span class="progress-value">92%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 92%;"></div>
+                                </div>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-label">
+                                    <span>Semester completed</span>
+                                    <span class="progress-value">60%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-clock"></i> Today's Schedule</h3>
+                            </div>
+                            <div class="schedule-list">
+                                <div class="schedule-item">
+                                    <div class="schedule-time">08:00 AM</div>
+                                    <div class="schedule-name">Breakfast</div>
+                                </div>
+                                <div class="schedule-item">
+                                    <div class="schedule-time">09:00 AM</div>
+                                    <div class="schedule-name">Web Development Class</div>
+                                </div>
+                                <div class="schedule-item">
+                                    <div class="schedule-time">01:00 PM</div>
+                                    <div class="schedule-name">Lunch</div>
+                                </div>
+                                <div class="schedule-item">
+                                    <div class="schedule-time">07:00 PM</div>
+                                    <div class="schedule-name">Dinner</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profile" class="tab-pane">
+                <div class="profile-card">
+                    <div class="profile-cover">
+                        <div class="profile-avatar-large">
+                            <i class="fas fa-user-graduate fa-3x"></i>
+                        </div>
+                    </div>
+                    <div class="profile-body">
+                        <h2 id="profileName">Aryan Behl</h2>
+                        <p class="profile-roll" id="profileRoll">Roll No: 2501350047</p>
+                        <div class="profile-grid">
+                            <div class="profile-field">
+                                <label>Full Name</label>
+                                <p id="infoName">Aryan Behl</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Course</label>
+                                <p>B.Tech CSE (Full Stack)</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Year/Semester</label>
+                                <p>1st Year | 2nd Semester</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Email</label>
+                                <p id="infoEmail">aryan.behl@krmangalam.edu.in</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Phone</label>
+                                <p>+91 98765 43210</p>
+                            </div>
+                            <div class="profile-field">
+                                <label>University</label>
+                                <p>KR Mangalam University</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Room Tab -->
+            <div id="room" class="tab-pane">
+                <div class="room-card">
+                    <div class="room-header">
+                        <i class="fas fa-building"></i>
+                        <div>
+                            <h2>Room B-206</h2>
+                            <p>Double Sharing | 2nd Floor</p>
+                        </div>
+                    </div>
+                    <div class="room-details-grid">
+                        <div class="room-detail-box">
+                            <i class="fas fa-bed"></i>
+                            <div>
+                                <h4>Bed No.</h4>
+                                <p>B-206A</p>
+                            </div>
+                        </div>
+                        <div class="room-detail-box">
+                            <i class="fas fa-user-friends"></i>
+                            <div>
+                                <h4>Roommate</h4>
+                                <p>Rahul Sharma</p>
+                            </div>
+                        </div>
+                        <div class="room-detail-box">
+                            <i class="fas fa-calendar"></i>
+                            <div>
+                                <h4>Allotted On</h4>
+                                <p>July 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="facilities-section">
+                        <h3><i class="fas fa-check-circle"></i> Facilities Available</h3>
+                        <div class="facilities-tags">
+                            <span>Wi-Fi</span>
+                            <span>AC</span>
+                            <span>Cot with Mattress</span>
+                            <span>Study Table</span>
+                            <span>Chair</span>
+                            <span>Cupboard</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint Tab -->
+            <div id="complaint" class="tab-pane">
+                <div class="complaint-wrapper">
+                    <div class="complaint-form-card">
+                        <h3><i class="fas fa-plus-circle"></i> Raise New Complaint</h3>
+                        <form id="complaintForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Complaint Type</label>
+                                    <select id="complaintType" required>
+                                        <option value="">Select Type</option>
+                                        <option value="Electrical">⚡ Electrical</option>
+                                        <option value="Plumbing">💧 Plumbing</option>
+                                        <option value="Furniture">🪑 Furniture</option>
+                                        <option value="Cleaning">🧹 Cleaning</option>
+                                        <option value="Food">🍔 Food/Mess</option>
+                                        <option value="Other">📌 Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Priority Level</label>
+                                    <select id="complaintPriority" required>
+                                        <option value="Low">🟢 Low</option>
+                                        <option value="Medium">🟡 Medium</option>
+                                        <option value="High">🔴 High</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="complaintDesc" rows="4" placeholder="Describe your problem in detail..." required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-paper-plane"></i> Submit Complaint
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="complaint-history-card">
+                        <h3><i class="fas fa-history"></i> Complaint History</h3>
+                        <div id="complaintHistoryList" class="complaint-list">
+                            <div style="text-align:center;padding:20px;color:#888;">Loading complaints...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Food Rating Tab -->
+            <div id="food" class="tab-pane">
+                <div class="food-card">
+                    <h3><i class="fas fa-star"></i> Rate Today's Meal</h3>
+                    <div class="meal-ratings">
+                        <div class="meal-item">
+                            <div class="meal-name">🍳 Breakfast</div>
+                            <div class="star-rating" data-meal="breakfast">
+                                <i class="far fa-star" data-value="1"></i>
+                                <i class="far fa-star" data-value="2"></i>
+                                <i class="far fa-star" data-value="3"></i>
+                                <i class="far fa-star" data-value="4"></i>
+                                <i class="far fa-star" data-value="5"></i>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <div class="meal-name">🍛 Lunch</div>
+                            <div class="star-rating" data-meal="lunch">
+                                <i class="far fa-star" data-value="1"></i>
+                                <i class="far fa-star" data-value="2"></i>
+                                <i class="far fa-star" data-value="3"></i>
+                                <i class="far fa-star" data-value="4"></i>
+                                <i class="far fa-star" data-value="5"></i>
+                            </div>
+                        </div>
+                        <div class="meal-item">
+                            <div class="meal-name">🍽️ Dinner</div>
+                            <div class="star-rating" data-meal="dinner">
+                                <i class="far fa-star" data-value="1"></i>
+                                <i class="far fa-star" data-value="2"></i>
+                                <i class="far fa-star" data-value="3"></i>
+                                <i class="far fa-star" data-value="4"></i>
+                                <i class="far fa-star" data-value="5"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="rating-submit-btn">Submit All Ratings</button>
+                </div>
+            </div>
+
+            <!-- Fee Tab -->
+            <div id="fee" class="tab-pane">
+                <div class="fee-card">
+                    <div class="fee-header">
+                        <h3>Fee Statement</h3>
+                        <span class="fee-badge">Paid</span>
+                    </div>
+                    <div class="fee-table">
+                        <div class="fee-row">
+                            <span>Tuition Fee</span>
+                            <span>₹85,000</span>
+                        </div>
+                        <div class="fee-row">
+                            <span>Hostel Rent</span>
+                            <span>₹45,000</span>
+                        </div>
+                        <div class="fee-row">
+                            <span>Mess Fee</span>
+                            <span>₹32,000</span>
+                        </div>
+                        <div class="fee-row">
+                            <span>Caution Deposit</span>
+                            <span>₹8,000</span>
+                        </div>
+                        <div class="fee-row total">
+                            <span>Total Amount</span>
+                            <span>₹85,000</span>
+                        </div>
+                        <div class="fee-row">
+                            <span>Amount Paid</span>
+                            <span class="paid-amount">₹85,000</span>
+                        </div>
+                        <div class="fee-row">
+                            <span>Due Amount</span>
+                            <span class="due-amount">₹0</span>
+                        </div>
+                    </div>
+                    <button class="download-btn"><i class="fas fa-download"></i> Download Receipt</button>
+                </div>
+            </div>
+
+            <!-- Attendance Tab -->
+            <div id="attendance" class="tab-pane">
+                <div class="attendance-card">
+                    <h3><i class="fas fa-chart-line"></i> Attendance Overview - March 2026</h3>
+                    <div class="attendance-circle">
+                        <div class="circle-percent">92%</div>
+                        <p>Overall Attendance</p>
+                    </div>
+                    <div class="subject-attendance">
+                        <div class="subject-row">
+                            <span>Web Development</span>
+                            <div class="subject-bar">
+                                <div class="bar-fill" style="width: 95%;"></div>
+                            </div>
+                            <span class="subject-percent">95%</span>
+                        </div>
+                        <div class="subject-row">
+                            <span>Database Management</span>
+                            <div class="subject-bar">
+                                <div class="bar-fill" style="width: 88%;"></div>
+                            </div>
+                            <span class="subject-percent">88%</span>
+                        </div>
+                        <div class="subject-row">
+                            <span>Programming in C</span>
+                            <div class="subject-bar">
+                                <div class="bar-fill" style="width: 94%;"></div>
+                            </div>
+                            <span class="subject-percent">94%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

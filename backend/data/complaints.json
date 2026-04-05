@@ -1,0 +1,59 @@
+{
+  "complaints": [
+    {
+      "id": "1775314815630",
+      "studentName": "Aryan Behl",
+      "studentRollNo": "2501350047",
+      "type": "Electrical",
+      "description": "Room light flickering",
+      "priority": "Medium",
+      "status": "pending",
+      "date": "2026-04-04",
+      "time": "8:30:15 pm"
+    },
+    {
+      "id": "1775314940735",
+      "studentName": "Aryan Behl",
+      "studentRollNo": "2501350047",
+      "type": "Electrical",
+      "description": "Room light flickering",
+      "priority": "Medium",
+      "status": "pending",
+      "date": "2026-04-04",
+      "time": "8:32:20 pm"
+    },
+    {
+      "id": "1775315342106",
+      "studentName": "Aryan Behl",
+      "studentRollNo": "2501350047",
+      "type": "Plumbing",
+      "description": "water leakage ",
+      "priority": "High",
+      "status": "pending",
+      "date": "2026-04-04",
+      "time": "8:39:02 pm"
+    },
+    {
+      "id": "1775316690438",
+      "studentName": "Aryan Behl",
+      "studentRollNo": "2501350047",
+      "type": "Furniture",
+      "description": "bed is damaged",
+      "priority": "Medium",
+      "status": "pending",
+      "date": "2026-04-04",
+      "time": "9:01:30 pm"
+    },
+    {
+      "id": "1775374734304",
+      "studentName": "Aryan Behl",
+      "studentRollNo": "2501350047",
+      "type": "Cleaning",
+      "description": "very dirty room",
+      "priority": "Medium",
+      "status": "pending",
+      "date": "2026-04-05",
+      "time": "1:08:54 pm"
+    }
+  ]
+}

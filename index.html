@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Hostel Management System | KR Mangalam University</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <h2>Hostel<span>Hub</span></h2>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-login" onclick="showLoginModal('student')">
+                    <i class="fas fa-user-graduate"></i> Student
+                </button>
+                <button class="btn-login warden" onclick="showLoginModal('warden')">
+                    <i class="fas fa-user-tie"></i> Warden
+                </button>
+                <button class="btn-login admin" onclick="showLoginModal('admin')">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <!-- <div class="hero-badge">
+                <i class="fas fa-graduation-cap"></i> KR Mangalam University
+            </div> -->
+            <div class="hero-badge">
+            <i class="fas fa-university"></i>
+            <span class="university-name">KR MANGALAM UNIVERSITY</span>
+            </div>
+            <h1 class="hero-title">
+                Smart Hostel<br>
+                <span class="highlight">Management System</span>
+            </h1>
+            <p class="hero-desc">
+                Automate hostel operations, manage complaints, track fees, and enhance<br>
+                student experience with our modern digital platform.
+            </p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="showLoginModal('student')">
+                    <i class="fas fa-rocket"></i> Get Started
+                </button>
+                <button class="btn-secondary" onclick="scrollToFeatures()">
+                    <i class="fas fa-play"></i> Learn More
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support Available</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="dashboard-preview">
+                <div class="preview-header">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Student Dashboard</span>
+                </div>
+                <div class="preview-stats">
+                    <div class="preview-stat">
+                        <div class="preview-value">B-206</div>
+                        <div class="preview-label">Room No</div>
+                    </div>
+                    <div class="preview-stat">
+                        <div class="preview-value">₹85k</div>
+                        <div class="preview-label">Fee Paid</div>
+                    </div>
+                    <div class="preview-stat">
+                        <div class="preview-value">92%</div>
+                        <div class="preview-label">Attendance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Features</div>
+                <h2 class="section-title">Everything You Need in<br><span class="highlight">One Platform</span></h2>
+                <p class="section-desc">Powerful features to streamline hostel operations and enhance student experience</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Easy Registration</h3>
+                    <p>Simple online registration process for students</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h3>Room Allocation</h3>
+                    <p>Automated room assignment and management</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Food Rating</h3>
+                    <p>Rate mess food and give feedback</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <h3>Complaint Management</h3>
+                    <p>Submit and track complaints online</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Fee Management</h3>
+                    <p>Check fee status and download receipts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Instant Notifications</h3>
+                    <p>Real-time updates and announcements</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Process</div>
+                <h2 class="section-title">How <span class="highlight">It Works</span></h2>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                    <h3>Register</h3>
+                    <p>Create your account</p>
+                </div>
+                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <div class="step-icon"><i class="fas fa-door-open"></i></div>
+                    <h3>Get Room</h3>
+                    <p>Room allocation by admin</p>
+                </div>
+                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <div class="step-icon"><i class="fas fa-ticket-alt"></i></div>
+                    <h3>Manage</h3>
+                    <p>Submit complaints & rate food</p>
+                </div>
+                <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+                <div class="step">
+                    <div class="step-number">04</div>
+                    <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Track</h3>
+                    <p>Monitor everything</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon" id="modalIcon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h2 id="modalTitle">Student Login</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="demo-alert">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Demo Credentials</span>
+                </div>
+                <div class="demo-creds" id="demoCreds">
+                    <div><strong>Student:</strong> student@krmu.com / 123456</div>
+                    <div><strong>Warden:</strong> warden@krmu.com / 123456</div>
+                    <div><strong>Admin:</strong> admin@krmu.com / 123456</div>
+                </div>
+                <form id="loginForm">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-login-submit">
+                        <i class="fas fa-arrow-right"></i> Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "student@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Aryan Behl",
+      "rollNo": "2501350047"
+    },
+    {
+      "id": "2",
+      "email": "warden@krmu.com",
+      "password": "123456",
+      "role": "warden",
+      "name": "Mr. Rajesh Sharma"
+    },
+    {
+      "id": "3",
+      "email": "admin@krmu.com",
+      "password": "123456",
+      "role": "admin",
+      "name": "Admin User"
+    }
+  ]
+}
