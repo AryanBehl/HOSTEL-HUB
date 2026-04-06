@@ -254,3 +254,31 @@ document.addEventListener('DOMContentLoaded', function() {
     loadComplaints();
     
 });
+
+// ========== PROFILE PHOTO UPLOAD ==========
+const avatarUpload = document.getElementById('avatarUpload');
+const avatarImg = document.getElementById('avatarImg');
+
+// Load saved photo on page load
+const savedPhoto = localStorage.getItem('userPhoto');
+if (savedPhoto && avatarImg) {
+    avatarImg.src = savedPhoto;
+}
+
+// Upload new photo
+if (avatarUpload) {
+    avatarUpload.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imgSrc = event.target.result;
+                avatarImg.src = imgSrc;
+                // Save to localStorage
+                localStorage.setItem('userPhoto', imgSrc);
+                alert('Profile photo updated successfully!');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}

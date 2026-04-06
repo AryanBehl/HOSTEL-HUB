@@ -70,9 +70,14 @@
                         <span class="badge" id="notificationBadge">0</span>
                     </div>
                     <div class="user-profile">
-                        <div class="user-avatar">
+                        <!-- <div class="user-avatar">
                             <i class="fas fa-user-graduate"></i>
-                        </div>
+                        </div> -->
+                        <div class="user-avatar" id="profileAvatar" onclick="document.getElementById('avatarUpload').click()">
+    <img id="avatarImg" src="default-avatar.png" alt="Profile" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+    <i class="fas fa-camera" style="position:absolute;bottom:0;right:0;background:#667eea;border-radius:50%;padding:4px;font-size:10px;"></i>
+</div>
+<input type="file" id="avatarUpload" style="display:none;" accept="image/*">
                         <div class="user-text">
                             <h4 id="userName">Aryan Behl</h4>
                             <p id="userRoll">2501350047</p>
