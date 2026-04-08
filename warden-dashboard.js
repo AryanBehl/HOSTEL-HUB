@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load Complaints
     async function loadComplaints() {
         try {
-            const res = await fetch('https://hostel-backend-aw3h.onrender.com/api/login');
+            const response = await fetch('https://hostel-backend-aw3h.onrender.com/api/complaints/all');
             const data = await res.json();
             if (data.complaints) {
                 displayComplaints(data.complaints);
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const id = this.getAttribute('data-id');
                 if (!confirm('Resolve this complaint?')) return;
                 try {
-                    const res = await fetch(`http://localhost:5000/api/complaint/resolve/${id}`, { method: 'PUT' });
+                    const res = await fetch(`https://hostel-backend-aw3h.onrender.com/${id}`, { method: 'PUT' });
                     const data = await res.json();
                     if (data.success) { alert('Resolved!'); loadComplaints(); }
                     else alert('Error');
