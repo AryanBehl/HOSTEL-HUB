@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load Complaints
     async function loadComplaints() {
         try {
-            const res = await fetch('https://hostel-backend-aw3h.onrender.com');
+            const res = await fetch('https://hostel-backend-aw3h.onrender.com/api/login');
             const data = await res.json();
             if (data.complaints) {
                 displayComplaints(data.complaints);
