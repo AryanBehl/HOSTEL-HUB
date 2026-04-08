@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             try {
-                const response = await fetch('https://hostel-backend-aw3h.onrender.com', {
+                const response = await fetch('https://hostel-backend-aw3h.onrender.com/api/complaint', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
