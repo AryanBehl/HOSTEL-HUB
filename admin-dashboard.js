@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load Students
     async function loadStudents() {
         try {
-            const res = await fetch('http://localhost:5000/api/students');
+            const res = await fetch('https://hostel-backend-aw3h.onrender.com');
             const data = await res.json();
             if (data.students) {
                 studentsData = data.students;

@@ -84,7 +84,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
     
     try {
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch('https://hostel-backend-aw3h.onrender.com', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
