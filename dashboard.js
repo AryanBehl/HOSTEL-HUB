@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         complaintList.innerHTML = '<div style="text-align:center;padding:20px;color:#888;">Loading complaints...</div>';
         
         try {
-            const response = await fetch(`https://hostel-backend-aw3h.onrender.com/api/login${encodeURIComponent(studentName)}`);
+            const response = await fetch(`https://hostel-backend-aw3h.onrender.com/api/complaints/${encodeURIComponent(userName)}`);
             const data = await response.json();
             
             if (data.complaints && data.complaints.length > 0) {
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             try {
-                const response = await fetch('http://localhost:5000/api/complaint', {
+                const response = await fetch('https://hostel-backend-aw3h.onrender.com', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
