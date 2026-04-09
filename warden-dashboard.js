@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.addEventListener('click', async function() {
                     const id = this.getAttribute('data-id');
                     if (!confirm('Resolve?')) return;
-                    await fetch(`http://localhost:5000/api/complaint/resolve/${id}`, { method: 'PUT' });
+                    await fetch(`https://hostel-backend-aw3h.onrender.com/api/complaint/resolve/${id}`, { method: 'PUT' });
                     loadComplaints();
                 });
             });
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load Students
     async function loadStudents() {
         try {
-            const res = await fetch('http://localhost:5000/api/students');
+            const res = await fetch('https://hostel-backend-aw3h.onrender.com/api/students');
             const data = await res.json();
             if (data.students) {
                 document.getElementById('totalStudents').textContent = data.students.length;
