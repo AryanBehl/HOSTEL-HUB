@@ -1,25 +1,23 @@
 // Wait for page to load
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ========== SET USER NAME FROM SESSION ==========
-    const userName = sessionStorage.getItem('userName') || 'Aryan Behl';
-    const userRollNo = sessionStorage.getItem('userRollNo') || '2501350047';
+    // Backend URL
+    const BACKEND_URL = 'https://hostel-backend-aw3h.onrender.com';
     
-    // Update name in multiple places
+    // Get student name from session
+    const studentName = sessionStorage.getItem('userName') || 'Aryan Behl';
+    const studentRollNo = sessionStorage.getItem('userRollNo') || '2501350047';
+    
+    // Update name in UI
     const nameElements = document.querySelectorAll('#studentName, #userName, #profileName, #infoName');
     nameElements.forEach(function(el) {
-        if (el) el.textContent = userName;
+        if (el) el.textContent = studentName;
     });
     
     const rollElements = document.querySelectorAll('#userRoll, #profileRoll');
     rollElements.forEach(function(el) {
-        if (el) el.textContent = userRollNo;
+        if (el) el.textContent = studentRollNo;
     });
-    
-    const emailElement = document.getElementById('infoEmail');
-    if (emailElement) {
-        emailElement.textContent = userName.toLowerCase().replace(' ', '.') + '@krmangalam.edu.in';
-    }
     
     // ========== TAB SWITCHING ==========
     const navItems = document.querySelectorAll('.nav-item');
@@ -39,6 +37,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 pane.classList.remove('active');
             });
             document.getElementById(tabId).classList.add('active');
+            
+            // Reload complaints when complaint tab opens
+            if (tabId === 'complaint') {
+                loadComplaints();
+            }
         });
     });
     
@@ -55,22 +58,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // ========== LOAD COMPLAINTS FROM BACKEND ==========
     async function loadComplaints() {
-        const studentName = sessionStorage.getItem('userName') || 'Aryan Behl';
         const complaintList = document.getElementById('complaintHistoryList');
-        
         if (!complaintList) return;
         
-        complaintList.innerHTML = '<div style="text-align:center;padding:20px;color:#888;">Loading complaints...</div>';
+        complaintList.innerHTML = '<div style="text-align:center;padding:20px;">Loading complaints...</div>';
         
         try {
-            const response = await fetch(`https://hostel-backend-aw3h.onrender.com/api/complaints/${encodeURIComponent(userName)}`);
+            const response = await fetch(`${BACKEND_URL}/api/complaints/${encodeURIComponent(studentName)}`);
             const data = await response.json();
             
             if (data.complaints && data.complaints.length > 0) {
-                updateComplaintList(data.complaints);
-                updateActiveComplaintsCount(data.complaints);
+                displayComplaints(data.complaints);
+                updateComplaintCount(data.complaints);
             } else {
-                complaintList.innerHTML = '<div style="text-align:center;padding:20px;color:#888;">No complaints found. Raise your first complaint!</div>';
+                complaintList.innerHTML = '<div style="text-align:center;padding:20px;">No complaints found. Raise your first complaint!</div>';
             }
         } catch (error) {
             console.error('Error loading complaints:', error);
@@ -78,15 +79,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function updateComplaintList(complaints) {
+    function displayComplaints(complaints) {
         const complaintList = document.getElementById('complaintHistoryList');
         if (!complaintList) return;
         
         complaintList.innerHTML = '';
         
-        // Add header
+        // Header
         const header = document.createElement('div');
-        header.className = 'complaint-row-header';
         header.style.display = 'grid';
         header.style.gridTemplateColumns = '100px 1fr 100px 100px';
         header.style.gap = '10px';
@@ -103,13 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         complaintList.appendChild(header);
         
-        // Add each complaint
+        // Complaints
         complaints.forEach(function(complaint) {
-            const statusColor = complaint.status === 'resolved' ? '#10b981' : '#f59e0b';
-            const statusText = complaint.status === 'resolved' ? 'Resolved ✓' : 'Pending';
-            
             const row = document.createElement('div');
-            row.className = 'complaint-row';
             row.style.display = 'grid';
             row.style.gridTemplateColumns = '100px 1fr 100px 100px';
             row.style.gap = '10px';
@@ -118,30 +114,30 @@ document.addEventListener('DOMContentLoaded', function() {
             row.innerHTML = `
                 <div><strong>${complaint.type}</strong></div>
                 <div>${complaint.description}</div>
-                <div style="color: ${statusColor}; font-weight: 500;">${statusText}</div>
-                <div style="color: #888;">${complaint.date}</div>
+                <div style="color: ${complaint.status === 'resolved' ? '#10b981' : '#f59e0b'}; font-weight:500;">${complaint.status === 'resolved' ? 'Resolved ✓' : 'Pending'}</div>
+                <div style="color:#888;">${complaint.date}</div>
             `;
             complaintList.appendChild(row);
         });
     }
     
-    function updateActiveComplaintsCount(complaints) {
-        const activeCount = complaints.filter(function(c) {
+    function updateComplaintCount(complaints) {
+        const pendingCount = complaints.filter(function(c) {
             return c.status === 'pending';
         }).length;
         
         const activeSpan = document.getElementById('activeComplaints');
         if (activeSpan) {
-            activeSpan.textContent = activeCount;
+            activeSpan.textContent = pendingCount;
         }
         
         const badge = document.getElementById('notificationBadge');
-        if (badge && activeCount > 0) {
-            badge.textContent = activeCount;
+        if (badge && pendingCount > 0) {
+            badge.textContent = pendingCount;
         }
     }
     
-    // ========== COMPLAINT FORM SUBMIT ==========
+    // ========== SUBMIT COMPLAINT ==========
     const complaintForm = document.getElementById('complaintForm');
     if (complaintForm) {
         complaintForm.addEventListener('submit', async function(e) {
@@ -150,8 +146,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const complaintType = document.getElementById('complaintType').value;
             const complaintDesc = document.getElementById('complaintDesc').value;
             const complaintPriority = document.getElementById('complaintPriority')?.value || 'Medium';
-            const submitBtn = document.querySelector('.submit-btn');
+            const submitBtn = document.querySelector('.submit-btn, .btn-submit');
             
+            // Validation
             if (!complaintType || complaintType === "") {
                 alert('Please select complaint type');
                 return;
@@ -162,16 +159,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            const studentName = sessionStorage.getItem('userName') || 'Aryan Behl';
-            const studentRollNo = sessionStorage.getItem('userRollNo') || '2501350047';
-            
+            // Disable button
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
             }
             
             try {
-                const response = await fetch('https://hostel-backend-aw3h.onrender.com/api/complaint', {
+                const response = await fetch(`${BACKEND_URL}/api/complaint`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -192,11 +187,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     complaintForm.reset();
                     await loadComplaints();
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('Error: ' + (data.message || 'Something went wrong'));
                 }
             } catch (error) {
                 console.error('Complaint error:', error);
-                alert('❌ Cannot connect to server.\n\nMake sure backend is running:\ncd backend\nnode server.js');
+                alert('❌ Cannot connect to backend.\n\nMake sure backend is running at:\n' + BACKEND_URL);
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -214,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
             star.addEventListener('click', function() {
                 const rating = this.getAttribute('data-value');
                 const allStars = this.parentElement.querySelectorAll('i');
-                for (var i = 0; i < allStars.length; i++) {
+                for (let i = 0; i < allStars.length; i++) {
                     if (i < rating) {
                         allStars[i].className = 'fas fa-star';
                     } else {
@@ -245,8 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const notificationIcon = document.querySelector('.notification-icon');
     if (notificationIcon) {
         notificationIcon.addEventListener('click', function() {
-            const activeCount = document.getElementById('activeComplaints')?.textContent || '0';
-            alert('📢 Notifications\n\nYou have ' + activeCount + ' active complaint(s).');
+            alert('📢 No new notifications');
         });
     }
     
@@ -254,31 +248,3 @@ document.addEventListener('DOMContentLoaded', function() {
     loadComplaints();
     
 });
-
-// ========== PROFILE PHOTO UPLOAD ==========
-const avatarUpload = document.getElementById('avatarUpload');
-const avatarImg = document.getElementById('avatarImg');
-
-// Load saved photo on page load
-const savedPhoto = localStorage.getItem('userPhoto');
-if (savedPhoto && avatarImg) {
-    avatarImg.src = savedPhoto;
-}
-
-// Upload new photo
-if (avatarUpload) {
-    avatarUpload.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const imgSrc = event.target.result;
-                avatarImg.src = imgSrc;
-                // Save to localStorage
-                localStorage.setItem('userPhoto', imgSrc);
-                alert('Profile photo updated successfully!');
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-}
