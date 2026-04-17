@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             document.getElementById(tabId).classList.add('active');
             
-            // Reload complaints when complaint tab opens
             if (tabId === 'complaint') {
                 loadComplaints();
             }
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ========== LOAD COMPLAINTS FROM BACKEND ==========
+    // ========== LOAD COMPLAINTS ==========
     async function loadComplaints() {
         const complaintList = document.getElementById('complaintHistoryList');
         if (!complaintList) return;
@@ -69,13 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (data.complaints && data.complaints.length > 0) {
                 displayComplaints(data.complaints);
-                updateComplaintCount(data.complaints);
             } else {
-                complaintList.innerHTML = '<div style="text-align:center;padding:20px;">No complaints found. Raise your first complaint!</div>';
+                complaintList.innerHTML = '<div style="text-align:center;padding:20px;">No complaints found</div>';
             }
         } catch (error) {
-            console.error('Error loading complaints:', error);
-            complaintList.innerHTML = '<div style="text-align:center;padding:20px;color:#ef4444;">⚠️ Cannot connect to server. Make sure backend is running.</div>';
+            console.error('Error:', error);
+            complaintList.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Cannot connect to server</div>';
         }
     }
     
@@ -85,56 +83,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         complaintList.innerHTML = '';
         
-        // Header
-        const header = document.createElement('div');
-        header.style.display = 'grid';
-        header.style.gridTemplateColumns = '100px 1fr 100px 100px';
-        header.style.gap = '10px';
-        header.style.padding = '12px';
-        header.style.backgroundColor = '#f0f0f0';
-        header.style.fontWeight = 'bold';
-        header.style.borderRadius = '10px';
-        header.style.marginBottom = '10px';
-        header.innerHTML = `
-            <div>Type</div>
-            <div>Description</div>
-            <div>Status</div>
-            <div>Date</div>
-        `;
-        complaintList.appendChild(header);
-        
-        // Complaints
         complaints.forEach(function(complaint) {
             const row = document.createElement('div');
             row.style.display = 'grid';
             row.style.gridTemplateColumns = '100px 1fr 100px 100px';
             row.style.gap = '10px';
-            row.style.padding = '12px';
+            row.style.padding = '10px';
             row.style.borderBottom = '1px solid #eee';
             row.innerHTML = `
                 <div><strong>${complaint.type}</strong></div>
                 <div>${complaint.description}</div>
-                <div style="color: ${complaint.status === 'resolved' ? '#10b981' : '#f59e0b'}; font-weight:500;">${complaint.status === 'resolved' ? 'Resolved ✓' : 'Pending'}</div>
-                <div style="color:#888;">${complaint.date}</div>
+                <div style="color: ${complaint.status === 'resolved' ? 'green' : 'orange'}">${complaint.status === 'resolved' ? 'Resolved' : 'Pending'}</div>
+                <div>${complaint.date}</div>
             `;
             complaintList.appendChild(row);
         });
-    }
-    
-    function updateComplaintCount(complaints) {
-        const pendingCount = complaints.filter(function(c) {
-            return c.status === 'pending';
-        }).length;
-        
-        const activeSpan = document.getElementById('activeComplaints');
-        if (activeSpan) {
-            activeSpan.textContent = pendingCount;
-        }
-        
-        const badge = document.getElementById('notificationBadge');
-        if (badge && pendingCount > 0) {
-            badge.textContent = pendingCount;
-        }
     }
     
     // ========== SUBMIT COMPLAINT ==========
@@ -145,24 +108,21 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const complaintType = document.getElementById('complaintType').value;
             const complaintDesc = document.getElementById('complaintDesc').value;
-            const complaintPriority = document.getElementById('complaintPriority')?.value || 'Medium';
             const submitBtn = document.querySelector('.submit-btn, .btn-submit');
             
-            // Validation
             if (!complaintType || complaintType === "") {
                 alert('Please select complaint type');
                 return;
             }
             
             if (!complaintDesc || complaintDesc.trim() === "") {
-                alert('Please enter complaint description');
+                alert('Please enter description');
                 return;
             }
             
-            // Disable button
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                submitBtn.innerHTML = 'Submitting...';
             }
             
             try {
@@ -176,75 +136,32 @@ document.addEventListener('DOMContentLoaded', function() {
                         studentRollNo: studentRollNo,
                         type: complaintType,
                         description: complaintDesc,
-                        priority: complaintPriority
+                        priority: 'Medium'
                     })
                 });
                 
                 const data = await response.json();
                 
                 if (data.success) {
-                    alert('✓ Complaint submitted successfully!');
+                    alert('Complaint submitted!');
                     complaintForm.reset();
-                    await loadComplaints();
+                    loadComplaints();
                 } else {
-                    alert('Error: ' + (data.message || 'Something went wrong'));
+                    alert('Error: ' + data.message);
                 }
             } catch (error) {
-                console.error('Complaint error:', error);
-                alert('❌ Cannot connect to backend.\n\nMake sure backend is running at:\n' + BACKEND_URL);
+                console.error('Error:', error);
+                alert('Cannot connect to backend. Check console.');
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Complaint';
+                    submitBtn.innerHTML = 'Submit Complaint';
                 }
             }
         });
     }
     
-    // ========== FOOD RATING STARS ==========
-    const starContainers = document.querySelectorAll('.star-rating');
-    starContainers.forEach(function(container) {
-        const stars = container.querySelectorAll('i');
-        stars.forEach(function(star) {
-            star.addEventListener('click', function() {
-                const rating = this.getAttribute('data-value');
-                const allStars = this.parentElement.querySelectorAll('i');
-                for (let i = 0; i < allStars.length; i++) {
-                    if (i < rating) {
-                        allStars[i].className = 'fas fa-star';
-                    } else {
-                        allStars[i].className = 'far fa-star';
-                    }
-                }
-            });
-        });
-    });
-    
-    // ========== SUBMIT FOOD RATING ==========
-    const ratingSubmitBtn = document.querySelector('.rating-submit-btn');
-    if (ratingSubmitBtn) {
-        ratingSubmitBtn.addEventListener('click', function() {
-            alert('Thank you for your rating! Your feedback helps us improve.');
-        });
-    }
-    
-    // ========== DOWNLOAD RECEIPT ==========
-    const downloadBtn = document.querySelector('.download-btn');
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', function() {
-            alert('Receipt downloaded successfully!');
-        });
-    }
-    
-    // ========== NOTIFICATION CLICK ==========
-    const notificationIcon = document.querySelector('.notification-icon');
-    if (notificationIcon) {
-        notificationIcon.addEventListener('click', function() {
-            alert('📢 No new notifications');
-        });
-    }
-    
-    // ========== LOAD COMPLAINTS ON PAGE LOAD ==========
+    // Load complaints on page load
     loadComplaints();
     
 });
