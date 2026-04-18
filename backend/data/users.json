@@ -169,18 +169,6 @@
       "phone": "9876543223"
     },
     {
-      "id": "15",
-      "email": "student@krmu.com",
-      "password": "123456",
-      "role": "student",
-      "name": "Demo Student",
-      "rollNo": "2501350099",
-      "roomNo": "B-215",
-      "course": "B.Tech CSE",
-      "year": "1st",
-      "phone": "9876543224"
-    },
-    {
       "id": "16",
       "email": "warden@krmu.com",
       "password": "123456",
