@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     const BACKEND_URL = 'https://hostel-backend-aw3h.onrender.com';
+    // const BACKEND_URL = 'https://hostel-backend-aw3h.onrender.com';
     
     // Tab Switching
     const navItems = document.querySelectorAll('.nav-item');
