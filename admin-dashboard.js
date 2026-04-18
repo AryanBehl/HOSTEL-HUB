@@ -1,82 +1,94 @@
+// Backend URL
+const BACKEND_URL = 'https://hostel-backend-aw3h.onrender.com';
+
+// Wait for page to load
 document.addEventListener('DOMContentLoaded', function() {
     
-    let studentsData = [];
-    
-    // Tab Switching
+    // ========== TAB SWITCHING ==========
     const navItems = document.querySelectorAll('.nav-item');
     const tabPanes = document.querySelectorAll('.tab-pane');
-    navItems.forEach(item => {
+    
+    navItems.forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault();
-            navItems.forEach(nav => nav.classList.remove('active'));
+            navItems.forEach(function(nav) { nav.classList.remove('active'); });
             this.classList.add('active');
             const tabId = this.getAttribute('data-tab');
-            tabPanes.forEach(pane => pane.classList.remove('active'));
+            tabPanes.forEach(function(pane) { pane.classList.remove('active'); });
             document.getElementById(tabId).classList.add('active');
             if (tabId === 'students') loadStudents();
             if (tabId === 'complaints') loadComplaints();
         });
     });
     
-    // Logout
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        if (confirm('Logout?')) { sessionStorage.clear(); window.location.href = 'index.html'; }
+    // ========== LOGOUT ==========
+    document.getElementById('logoutBtn')?.addEventListener('click', function() {
+        if (confirm('Logout?')) {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
     });
     
-    // Load Students
+    // ========== LOAD STUDENTS ==========
     async function loadStudents() {
+        const container = document.getElementById('studentsList');
+        if (!container) return;
+        
+        container.innerHTML = '<div style="text-align:center;padding:20px;">Loading...</div>';
+        
         try {
-            const res = await fetch('https://hostel-backend-aw3h.onrender.com/api/login');
-            const data = await res.json();
-            if (data.students) {
-                studentsData = data.students;
-                document.getElementById('totalStudents').textContent = studentsData.length;
-                displayStudents(studentsData);
+            const response = await fetch(`${BACKEND_URL}/api/students`);
+            const data = await response.json();
+            
+            if (data.students && data.students.length > 0) {
+                displayStudents(data.students);
+                document.getElementById('totalStudents').textContent = data.students.length;
+            } else {
+                container.innerHTML = '<div style="text-align:center;padding:20px;">No students found</div>';
             }
-        } catch(err) {
-            document.getElementById('studentsList').innerHTML = '<div style="padding:20px;text-align:center;color:red;">Backend not running</div>';
+        } catch (error) {
+            console.error('Error:', error);
+            container.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Cannot connect to backend</div>';
         }
     }
     
     function displayStudents(students) {
-        if (students.length === 0) {
-            document.getElementById('studentsList').innerHTML = '<div style="padding:20px;text-align:center;">No students</div>';
-            return;
-        }
+        const container = document.getElementById('studentsList');
+        if (!container) return;
         
-        let html = '<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;"><div>Roll No</div><div>Name</div><div>Email</div><div>Course</div><div>Actions</div></div>';
+        let html = '<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;border-radius:10px;margin-bottom:10px;"><div>Roll No</div><div>Name</div><div>Email</div><div>Course</div><div>Actions</div></div>';
         
-        students.forEach((s, index) => {
-            html += `<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;border-bottom:1px solid #eee;" data-index="${index}">
-                <div>${s.rollNo || 'N/A'}</div>
-                <div>${s.name}</div>
-                <div>${s.email}</div>
-                <div>B.Tech CSE</div>
-                <div><button class="edit-student" data-id="${s.id}" style="background:#3b82f6;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;margin-right:5px;">Edit</button><button class="delete-student" data-id="${s.id}" style="background:#ef4444;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;">Del</button></div>
-            </div>`;
+        students.forEach(function(student) {
+            html += `
+                <div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;border-bottom:1px solid #eee;" data-id="${student.id}">
+                    <div>${student.rollNo || 'N/A'}</div>
+                    <div>${student.name}</div>
+                    <div>${student.email}</div>
+                    <div>B.Tech CSE</div>
+                    <div>
+                        <button class="edit-student" data-id="${student.id}" style="background:#3b82f6;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;margin-right:5px;">Edit</button>
+                        <button class="delete-student" data-id="${student.id}" style="background:#ef4444;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;">Del</button>
+                    </div>
+                </div>
+            `;
         });
         
-        document.getElementById('studentsList').innerHTML = html;
+        container.innerHTML = html;
         
         // Edit buttons
-        document.querySelectorAll('.edit-student').forEach(btn => {
+        document.querySelectorAll('.edit-student').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const student = studentsData.find(s => s.id == id);
-                if (student) {
-                    const newName = prompt('Edit name:', student.name);
-                    if (newName && newName !== student.name) {
-                        alert(`Student name updated to: ${newName}`);
-                        loadStudents();
-                    }
+                const newName = prompt('Enter new name:');
+                if (newName) {
+                    alert('Student name updated to: ' + newName);
+                    loadStudents();
                 }
             });
         });
         
         // Delete buttons
-        document.querySelectorAll('.delete-student').forEach(btn => {
+        document.querySelectorAll('.delete-student').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
                 if (confirm('Delete this student?')) {
                     alert('Student deleted!');
                     loadStudents();
@@ -85,63 +97,80 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add Student
-    document.getElementById('addStudentBtn')?.addEventListener('click', () => {
-        const name = prompt('Enter student name:');
-        const rollNo = prompt('Enter roll number:');
-        const email = prompt('Enter email:');
-        if (name && rollNo && email) {
-            alert(`Student added!\nName: ${name}\nRoll: ${rollNo}\nEmail: ${email}`);
-            loadStudents();
-        }
-    });
-    
-    // Load Complaints
+    // ========== LOAD COMPLAINTS ==========
     async function loadComplaints() {
+        const container = document.getElementById('complaintsList');
+        if (!container) return;
+        
+        container.innerHTML = '<div style="text-align:center;padding:20px;">Loading...</div>';
+        
         try {
-            const res = await fetch('http://localhost:5000/api/complaints/all');
-            const data = await res.json();
-            if (data.complaints) {
+            const response = await fetch(`${BACKEND_URL}/api/complaints/all`);
+            const data = await response.json();
+            
+            if (data.complaints && data.complaints.length > 0) {
                 displayComplaints(data.complaints);
                 updateStats(data.complaints);
+            } else {
+                container.innerHTML = '<div style="text-align:center;padding:20px;">No complaints found</div>';
             }
-        } catch(err) {
-            document.getElementById('complaintsList').innerHTML = '<div style="padding:20px;text-align:center;color:red;">Backend not running</div>';
+        } catch (error) {
+            console.error('Error:', error);
+            container.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Cannot connect to backend</div>';
         }
     }
     
     function displayComplaints(complaints) {
-        if (complaints.length === 0) {
-            document.getElementById('complaintsList').innerHTML = '<div style="padding:20px;text-align:center;">No complaints</div>';
-            return;
-        }
+        const container = document.getElementById('complaintsList');
+        if (!container) return;
         
-        let html = '<div style="display:grid;grid-template-columns:150px 100px 1fr 100px 100px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;"><div>Student</div><div>Type</div><div>Description</div><div>Date</div><div>Status</div></div>';
+        let html = '<div style="display:grid;grid-template-columns:150px 100px 1fr 100px 100px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;border-radius:10px;margin-bottom:10px;"><div>Student</div><div>Type</div><div>Description</div><div>Date</div><div>Status</div></div>';
         
-        complaints.forEach(c => {
-            const isPending = c.status === 'pending';
-            html += `<div style="display:grid;grid-template-columns:150px 100px 1fr 100px 100px;gap:10px;padding:12px;border-bottom:1px solid #eee;">
-                <div>${c.studentName}</div>
-                <div>${c.type}</div>
-                <div>${c.description.substring(0, 60)}</div>
-                <div>${c.date}</div>
-                <div><span style="background:${isPending ? '#f59e0b20' : '#10b98120'};color:${isPending ? '#f59e0b' : '#10b981'};padding:4px 8px;border-radius:20px;">${isPending ? 'Pending' : 'Resolved'}</span></div>
-            </div>`;
+        complaints.forEach(function(complaint) {
+            const statusColor = complaint.status === 'resolved' ? '#10b981' : '#f59e0b';
+            const statusText = complaint.status === 'resolved' ? 'Resolved ✓' : 'Pending';
+            
+            html += `
+                <div style="display:grid;grid-template-columns:150px 100px 1fr 100px 100px;gap:10px;padding:12px;border-bottom:1px solid #eee;">
+                    <div>${complaint.studentName}</div>
+                    <div>${complaint.type}</div>
+                    <div>${complaint.description.substring(0, 60)}</div>
+                    <div>${complaint.date}</div>
+                    <div style="color:${statusColor};font-weight:500;">${statusText}</div>
+                </div>
+            `;
         });
         
-        document.getElementById('complaintsList').innerHTML = html;
+        container.innerHTML = html;
     }
     
     function updateStats(complaints) {
         const total = complaints.length;
-        const resolved = complaints.filter(c => c.status === 'resolved').length;
+        const resolved = complaints.filter(function(c) { return c.status === 'resolved'; }).length;
+        const percent = total > 0 ? Math.round((resolved / total) * 100) : 0;
+        
         document.getElementById('totalComplaints').textContent = total;
         document.getElementById('resolvedComplaints').textContent = resolved;
-        
-        const percent = total > 0 ? Math.round((resolved / total) * 100) : 0;
-        document.getElementById('overviewStats').innerHTML = `<div class="stat-progress"><div class="progress-label"><span>Complaints Resolved</span><span>${percent}%</span></div><div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div></div>`;
+        document.getElementById('resolvePercent').textContent = percent + '%';
+        document.getElementById('resolveFill').style.width = percent + '%';
     }
     
+    // ========== ADD STUDENT ==========
+    const addStudentBtn = document.getElementById('addStudentBtn');
+    if (addStudentBtn) {
+        addStudentBtn.addEventListener('click', function() {
+            const name = prompt('Enter student name:');
+            const rollNo = prompt('Enter roll number:');
+            const email = prompt('Enter email:');
+            if (name && rollNo && email) {
+                alert(`Student added!\nName: ${name}\nRoll: ${rollNo}\nEmail: ${email}`);
+                loadStudents();
+            }
+        });
+    }
+    
+    // ========== LOAD ON PAGE LOAD ==========
     loadStudents();
     loadComplaints();
+    
 });
