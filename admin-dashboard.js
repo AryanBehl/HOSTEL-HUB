@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadStudents() {
         const container = document.getElementById('studentsList');
         if (!container) return;
-        container.innerHTML = '<div style="text-align:center;padding:20px;">Loading...</div>';
+        container.innerHTML = '<div style="text-align:center;padding:20px;">Loading students...</div>';
         try {
             const res = await fetch(`${BACKEND_URL}/api/students`);
             const data = await res.json();
@@ -39,19 +39,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayStudents(data.students);
                 document.getElementById('totalStudents').textContent = data.students.length;
             } else {
-                container.innerHTML = '<div style="text-align:center;padding:20px;">No students</div>';
+                container.innerHTML = '<div style="text-align:center;padding:20px;">No students found</div>';
                 document.getElementById('totalStudents').textContent = '0';
             }
         } catch (err) {
-            container.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Backend error</div>';
+            console.error('Error:', err);
+            container.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Cannot connect to backend</div>';
         }
     }
     
     function displayStudents(students) {
         const container = document.getElementById('studentsList');
-        let html = '<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;"><div>Roll No</div><div>Name</div><div>Email</div><div>Course</div><div>Actions</div></div>';
+        let html = '<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;border-radius:10px;margin-bottom:10px;"><div>Roll No</div><div>Name</div><div>Email</div><div>Course</div><div>Actions</div></div>';
         students.forEach(s => {
-            html += `<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;border-bottom:1px solid #eee;" data-id="${s.id}">
+            html += `<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;border-bottom:1px solid #eee;">
                 <div>${s.rollNo || 'N/A'}</div>
                 <div>${s.name}</div>
                 <div>${s.email}</div>
@@ -78,34 +79,43 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadComplaints() {
         const container = document.getElementById('complaintsList');
         if (!container) return;
-        container.innerHTML = '<div style="text-align:center;padding:20px;">Loading...</div>';
+        container.innerHTML = '<div style="text-align:center;padding:20px;">Loading complaints...</div>';
         try {
             const res = await fetch(`${BACKEND_URL}/api/complaints/all`);
             const data = await res.json();
+            console.log('Complaints data:', data);
             if (data.complaints && data.complaints.length > 0) {
-                let html = '<div style="display:grid;grid-template-columns:150px 100px 1fr 100px 100px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;"><div>Student</div><div>Type</div><div>Description</div><div>Date</div><div>Status</div></div>';
+                let html = '<div style="display:grid;grid-template-columns:150px 100px 1fr 100px 100px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;border-radius:10px;margin-bottom:10px;"><div>Student</div><div>Type</div><div>Description</div><div>Date</div><div>Status</div></div>';
                 data.complaints.forEach(c => {
+                    const statusColor = c.status === 'resolved' ? '#10b981' : '#f59e0b';
                     html += `<div style="display:grid;grid-template-columns:150px 100px 1fr 100px 100px;gap:10px;padding:12px;border-bottom:1px solid #eee;">
                         <div>${c.studentName}</div>
                         <div>${c.type}</div>
-                        <div>${c.description}</div>
+                        <div>${c.description.substring(0, 60)}</div>
                         <div>${c.date}</div>
-                        <div style="color:${c.status === 'resolved' ? 'green' : 'orange'}">${c.status}</div>
+                        <div style="color:${statusColor};font-weight:500;">${c.status === 'resolved' ? 'Resolved ✓' : 'Pending'}</div>
                     </div>`;
                 });
                 container.innerHTML = html;
+                
+                // Update stats
                 const total = data.complaints.length;
                 const resolved = data.complaints.filter(c => c.status === 'resolved').length;
+                const percent = total > 0 ? Math.round((resolved / total) * 100) : 0;
                 document.getElementById('totalComplaints').textContent = total;
                 document.getElementById('resolvedComplaints').textContent = resolved;
-                const percent = total > 0 ? Math.round((resolved / total) * 100) : 0;
                 document.getElementById('resolvePercent').textContent = percent + '%';
                 document.getElementById('resolveFill').style.width = percent + '%';
             } else {
-                container.innerHTML = '<div style="text-align:center;padding:20px;">No complaints</div>';
+                container.innerHTML = '<div style="text-align:center;padding:20px;">No complaints found</div>';
+                document.getElementById('totalComplaints').textContent = '0';
+                document.getElementById('resolvedComplaints').textContent = '0';
+                document.getElementById('resolvePercent').textContent = '0%';
+                document.getElementById('resolveFill').style.width = '0%';
             }
         } catch (err) {
-            container.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Backend error</div>';
+            console.error('Error loading complaints:', err);
+            container.innerHTML = '<div style="text-align:center;padding:20px;color:red;">Cannot connect to backend. Make sure server is running.</div>';
         }
     }
     
@@ -115,13 +125,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const rollNo = prompt('Enter roll number:');
         const email = prompt('Enter email:');
         if (name && rollNo && email) {
-            await fetch(`${BACKEND_URL}/api/students/add`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, rollNo, email })
-            });
-            loadStudents();
-            alert('Student added!');
+            try {
+                await fetch(`${BACKEND_URL}/api/students/add`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, rollNo, email })
+                });
+                alert('Student added successfully!');
+                loadStudents();
+            } catch (err) {
+                alert('Error adding student');
+            }
         }
     });
     
