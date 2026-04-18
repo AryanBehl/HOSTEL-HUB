@@ -149,3 +149,21 @@ app.post('/api/students/add', (req, res) => {
     console.log('New student added:', newStudent);
     res.json({ success: true, message: 'Student added successfully', student: newStudent });
 });
+
+// ========== ADD STUDENT API ==========
+app.post('/api/students/add', (req, res) => {
+    const { name, rollNo, email } = req.body;
+    
+    console.log('Adding student:', { name, rollNo, email });
+    
+    // Students array (temporary)
+    const newStudent = {
+        id: Date.now().toString(),
+        name: name,
+        rollNo: rollNo,
+        email: email,
+        role: 'student'
+    };
+    
+    res.json({ success: true, message: 'Student added', student: newStudent });
+});
