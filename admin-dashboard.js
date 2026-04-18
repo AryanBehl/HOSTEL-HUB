@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('totalStudents').textContent = data.students.length;
             } else {
                 container.innerHTML = '<div style="text-align:center;padding:20px;">No students found</div>';
+                document.getElementById('totalStudents').textContent = '0';
             }
         } catch (error) {
             console.error('Error:', error);
@@ -149,10 +150,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const resolved = complaints.filter(function(c) { return c.status === 'resolved'; }).length;
         const percent = total > 0 ? Math.round((resolved / total) * 100) : 0;
         
-        document.getElementById('totalComplaints').textContent = total;
-        document.getElementById('resolvedComplaints').textContent = resolved;
-        document.getElementById('resolvePercent').textContent = percent + '%';
-        document.getElementById('resolveFill').style.width = percent + '%';
+        const totalComplaintsSpan = document.getElementById('totalComplaints');
+        const resolvedComplaintsSpan = document.getElementById('resolvedComplaints');
+        const resolvePercentSpan = document.getElementById('resolvePercent');
+        const resolveFillDiv = document.getElementById('resolveFill');
+        
+        if (totalComplaintsSpan) totalComplaintsSpan.textContent = total;
+        if (resolvedComplaintsSpan) resolvedComplaintsSpan.textContent = resolved;
+        if (resolvePercentSpan) resolvePercentSpan.textContent = percent + '%';
+        if (resolveFillDiv) resolveFillDiv.style.width = percent + '%';
     }
     
     // ========== ADD STUDENT ==========
@@ -164,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = prompt('Enter email:');
             if (name && rollNo && email) {
                 alert(`Student added!\nName: ${name}\nRoll: ${rollNo}\nEmail: ${email}`);
-                loadStudents();
+                loadStudents();  // ← This will refresh the list and update total count
             }
         });
     }
