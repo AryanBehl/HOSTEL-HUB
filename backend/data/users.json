@@ -2,25 +2,201 @@
   "users": [
     {
       "id": "1",
-      "email": "student@krmu.com",
+      "email": "aryan.behl@krmu.com",
       "password": "123456",
       "role": "student",
       "name": "Aryan Behl",
-      "rollNo": "2501350047"
+      "rollNo": "2501350047",
+      "roomNo": "B-206",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543210"
     },
     {
       "id": "2",
-      "email": "warden@krmu.com",
+      "email": "rahul.sharma@krmu.com",
       "password": "123456",
-      "role": "warden",
-      "name": "Mr. Rajesh Sharma"
+      "role": "student",
+      "name": "Rahul Sharma",
+      "rollNo": "2501350012",
+      "roomNo": "B-208",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543211"
     },
     {
       "id": "3",
+      "email": "priya.singh@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Priya Singh",
+      "rollNo": "2501350023",
+      "roomNo": "C-112",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543212"
+    },
+    {
+      "id": "4",
+      "email": "neha.gupta@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Neha Gupta",
+      "rollNo": "2501350034",
+      "roomNo": "A-101",
+      "course": "B.Tech CSE",
+      "year": "2nd",
+      "phone": "9876543213"
+    },
+    {
+      "id": "5",
+      "email": "kirtarth.jhala@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Kirtarth Jhala",
+      "rollNo": "2501350059",
+      "roomNo": "C-105",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543214"
+    },
+    {
+      "id": "6",
+      "email": "tarun.chaurasia@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Tarun Chaurasia",
+      "rollNo": "2501350067",
+      "roomNo": "B-210",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543215"
+    },
+    {
+      "id": "7",
+      "email": "khushi.kumari@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Khushi Kumari",
+      "rollNo": "2501350076",
+      "roomNo": "A-201",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543216"
+    },
+    {
+      "id": "8",
+      "email": "nidhi.kathuria@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Nidhi Kathuria",
+      "rollNo": "2501350044",
+      "roomNo": "A-202",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543217"
+    },
+    {
+      "id": "9",
+      "email": "amit.verma@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Amit Verma",
+      "rollNo": "2501350088",
+      "roomNo": "B-215",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543218"
+    },
+    {
+      "id": "10",
+      "email": "sneha.reddy@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Sneha Reddy",
+      "rollNo": "2501350099",
+      "roomNo": "C-120",
+      "course": "B.Tech CSE",
+      "year": "2nd",
+      "phone": "9876543219"
+    },
+    {
+      "id": "11",
+      "email": "rohit.kumar@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Rohit Kumar",
+      "rollNo": "2501350100",
+      "roomNo": "B-220",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543220"
+    },
+    {
+      "id": "12",
+      "email": "pooja.mehta@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Pooja Mehta",
+      "rollNo": "2501350111",
+      "roomNo": "A-205",
+      "course": "B.Tech CSE",
+      "year": "2nd",
+      "phone": "9876543221"
+    },
+    {
+      "id": "13",
+      "email": "vijay.singh@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Vijay Singh",
+      "rollNo": "2501350122",
+      "roomNo": "C-108",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543222"
+    },
+    {
+      "id": "14",
+      "email": "ankita.jain@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Ankita Jain",
+      "rollNo": "2501350133",
+      "roomNo": "B-225",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543223"
+    },
+    {
+      "id": "15",
+      "email": "student@krmu.com",
+      "password": "123456",
+      "role": "student",
+      "name": "Demo Student",
+      "rollNo": "2501350099",
+      "roomNo": "B-215",
+      "course": "B.Tech CSE",
+      "year": "1st",
+      "phone": "9876543224"
+    },
+    {
+      "id": "16",
+      "email": "warden@krmu.com",
+      "password": "123456",
+      "role": "warden",
+      "name": "Mr. Rajesh Sharma",
+      "rollNo": null,
+      "roomNo": null
+    },
+    {
+      "id": "17",
       "email": "admin@krmu.com",
       "password": "123456",
       "role": "admin",
-      "name": "Admin User"
+      "name": "Admin User",
+      "rollNo": null,
+      "roomNo": null
     }
   ]
 }
