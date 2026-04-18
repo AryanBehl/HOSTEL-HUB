@@ -51,24 +51,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('studentsList');
         let html = '<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;background:#f0f0f0;font-weight:bold;"><div>Roll No</div><div>Name</div><div>Email</div><div>Course</div><div>Actions</div></div>';
         students.forEach(s => {
-            html += `<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;border-bottom:1px solid #eee;">
+            html += `<div style="display:grid;grid-template-columns:150px 1fr 1fr 1fr 120px;gap:10px;padding:12px;border-bottom:1px solid #eee;" data-id="${s.id}">
                 <div>${s.rollNo || 'N/A'}</div>
                 <div>${s.name}</div>
                 <div>${s.email}</div>
                 <div>B.Tech CSE</div>
                 <div>
-                    <button class="edit-btn" data-id="${s.id}" style="background:#3b82f6;color:white;border:none;padding:4px 10px;border-radius:5px;margin-right:5px;">Edit</button>
-                    <button class="delete-btn" data-id="${s.id}" style="background:#ef4444;color:white;border:none;padding:4px 10px;border-radius:5px;">Del</button>
+                    <button class="delete-student" data-id="${s.id}" style="background:#ef4444;color:white;border:none;padding:4px 10px;border-radius:5px;cursor:pointer;">Delete</button>
                 </div>
             </div>`;
         });
         container.innerHTML = html;
         
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', () => alert('Edit feature coming soon'));
-        });
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', () => alert('Delete feature coming soon'));
+        document.querySelectorAll('.delete-student').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('Delete this student?')) {
+                    await fetch(`${BACKEND_URL}/api/students/delete/${id}`, { method: 'DELETE' });
+                    loadStudents();
+                }
+            });
         });
     }
     
@@ -92,9 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>`;
                 });
                 container.innerHTML = html;
-                document.getElementById('totalComplaints').textContent = data.complaints.length;
+                const total = data.complaints.length;
                 const resolved = data.complaints.filter(c => c.status === 'resolved').length;
+                document.getElementById('totalComplaints').textContent = total;
                 document.getElementById('resolvedComplaints').textContent = resolved;
+                const percent = total > 0 ? Math.round((resolved / total) * 100) : 0;
+                document.getElementById('resolvePercent').textContent = percent + '%';
+                document.getElementById('resolveFill').style.width = percent + '%';
             } else {
                 container.innerHTML = '<div style="text-align:center;padding:20px;">No complaints</div>';
             }
@@ -103,14 +109,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Add Student (Simple - without backend API for now)
-    document.getElementById('addStudentBtn')?.addEventListener('click', () => {
+    // Add Student
+    document.getElementById('addStudentBtn')?.addEventListener('click', async () => {
         const name = prompt('Enter student name:');
         const rollNo = prompt('Enter roll number:');
         const email = prompt('Enter email:');
         if (name && rollNo && email) {
-            alert(`Student added!\nName: ${name}\nRoll: ${rollNo}\nEmail: ${email}\n\nNote: Student will appear after backend API is added.`);
+            await fetch(`${BACKEND_URL}/api/students/add`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, rollNo, email })
+            });
             loadStudents();
+            alert('Student added!');
         }
     });
     
