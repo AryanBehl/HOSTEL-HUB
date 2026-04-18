@@ -118,3 +118,34 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`Complaints file path: ${complaintsPath}`);
 });
+
+// ========== ADD STUDENT ==========
+app.post('/api/students/add', (req, res) => {
+    const { name, rollNo, email, password, course } = req.body;
+    
+    // Read existing users
+    const usersPath = path.join(__dirname, 'data', 'users.json');
+    let usersData = { users: [] };
+    
+    if (fs.existsSync(usersPath)) {
+        const data = fs.readFileSync(usersPath, 'utf8');
+        usersData = JSON.parse(data);
+    }
+    
+    // Create new student
+    const newStudent = {
+        id: Date.now().toString(),
+        name: name,
+        rollNo: rollNo,
+        email: email,
+        password: password || '123456',
+        role: 'student',
+        course: course || 'B.Tech CSE'
+    };
+    
+    usersData.users.push(newStudent);
+    fs.writeFileSync(usersPath, JSON.stringify(usersData, null, 2));
+    
+    console.log('New student added:', newStudent);
+    res.json({ success: true, message: 'Student added successfully', student: newStudent });
+});
